@@ -10,24 +10,18 @@ export default function Home() {
   let welcomeText = "the ERD Tool";
 
   return (
+    <>
     <main>
       <Container className="p-3">
-        <h1 className="header">Welcome to {welcomeText}</h1>
+        <h1 className="header">Welcome to Edit</h1>
         <Row xs={1} md={3} className="g-1">
           <Col>
-            <DiagramCard />
-          </Col>
-          <Col>
-            <DiagramCard />
-          </Col>
-          <Col>
-            <DiagramCard />
-          </Col>
-          <Col>
-            <DiagramCard />
+            <DiagramCard></DiagramCard>
           </Col>
         </Row>
       </Container>
     </main>
+    <div>Hello</div>
+    </>
   );
 }
