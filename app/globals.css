@@ -6,6 +6,11 @@
     --bg-opacity: .9;
 }
 
+html, body {
+    height: 100vh;
+    overflow: hidden;
+}
+
 .bg-opacity {
     --bs-bg-opacity: var(--bg-opacity) !important;
 }
@@ -16,4 +21,8 @@
     position: relative;
     top: -2px;
     vertical-align: middle;
+}
+
+.canvas-wrapper {
+    height: 100vh;
 }

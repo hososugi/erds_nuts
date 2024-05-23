@@ -1,27 +1,42 @@
 "use client";
-import React, { useState } from 'react';
-import TopNav from "@/components/TopNav";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import DiagramCard from "@/components/DiagramCard";
+import createEngine, { DefaultLinkModel, DefaultNodeModel, DiagramModel } from '@projectstorm/react-diagrams';
+import { CanvasWidget } from '@projectstorm/react-canvas-core';
 
-export default function Home() {
-  let welcomeText = "the ERD Tool";
 
-  return (
-    <>
-    <main>
-      <Container className="p-3">
-        <h1 className="header">Welcome to Edit</h1>
-        <Row xs={1} md={3} className="g-1">
-          <Col>
-            <DiagramCard></DiagramCard>
-          </Col>
-        </Row>
-      </Container>
-    </main>
-    <div>Hello</div>
-    </>
-  );
+
+
+export default function Edit() {
+    // create an instance of the engine with all the defaults
+    const engine = createEngine();
+
+    // node 1
+    const nodeCustomer = new DefaultNodeModel({
+        name: 'Customer',
+        color: 'rgb(0,192,255)',
+    });
+    nodeCustomer.setPosition(100, 100);
+    let portCustomerId = nodeCustomer.addOutPort('CustomerID');
+    let portCustomerName = nodeCustomer.addOutPort('Name');
+
+
+    // node 2
+    const nodeOrder = new DefaultNodeModel({
+        name: 'Order',
+        color: 'rgb(0,192,255)',
+    });
+    nodeOrder.setPosition(100, 200);
+    let portOrderId = nodeOrder.addOutPort('Out');
+    let portOrderCustomerId = nodeOrder.addOutPort('In');
+
+    // link them and add a label to the link
+    const link = portCustomerId.link<DefaultLinkModel>(portOrderCustomerId);
+    //link.addLabel('Hello World!');
+
+    const model = new DiagramModel();
+    model.addAll(nodeCustomer, nodeOrder);
+    engine.setModel(model);
+
+    return (
+        <CanvasWidget engine={engine} className="canvas-wrapper" />
+    );
 }
