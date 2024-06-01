@@ -25,4 +25,14 @@ html, body {
 
 .canvas-wrapper {
     height: 100vh;
+
+    svg {
+        width:100%;
+        height:100%
+    }
+}
+
+#tool-nav {
+    top: 100px;
+    left: 10px;
 }
