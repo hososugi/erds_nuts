@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
-import ToolPan from '@/components/tools/ToolPan';
-import { ArrowsMove, ZoomIn, PlusSquare, ArrowUpLeftSquare, XSquare } from 'react-bootstrap-icons';
+import ToolButton from '@/components/tools/ToolButton';
+import { ArrowsMove, ZoomIn, PlusSquare, ArrowUpLeftSquare, XSquare, Apple } from 'react-bootstrap-icons';
 
 export default function LeftNavMenu() {
   const [tool, setTool] = useState();
@@ -15,7 +15,7 @@ export default function LeftNavMenu() {
         >
         
         <ButtonGroup vertical>
-            <ToolPan id="tool-pan" setTool={setTool} active={tool} />
+            <ToolButton id="tool-pan" setTool={setTool} active={tool} icon={<ArrowsMove className="icon" />} />
             <Button id="tool-zoom"><ZoomIn className="icon" /></Button>
             <Button id="tool-add-node"><PlusSquare className="icon" /></Button>
             <Button id="tool-select-node"><ArrowUpLeftSquare className="icon" /></Button>

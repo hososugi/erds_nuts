@@ -1,0 +1,49 @@
+[{
+    "title": "Products",
+    "x": 100,
+    "y": 100,
+    "width": 200,
+    "style": {
+        "fill": "rgb(75, 158, 134)"
+    },
+    "rows": [
+        {
+            "isPrimary": true,
+            "name": "ID",
+            "type": "UUID",
+            "fill": "#E3EEF1"
+        },
+        {
+            "name": "Name",
+            "type": "String"
+        }
+    ]
+},{
+    "title": "Orders",
+    "x": 340,
+    "y": 100,
+    "width": 200,
+    "style": {
+        "fill": "rgb(75, 158, 134)"
+    },
+    "rows": [
+        {
+            "isPrimary": true,
+            "name": "ID",
+            "type": "UUID",
+            "fill": "#E3EEF1"
+        },
+        {
+            "isForeign": true,
+            "name": "ProductID",
+            "type": "Int",
+            "foreignNodeIndex": 0,
+            "foreignNodeRow": 0
+        },
+        {
+            "name": "Desc",
+            "type": "String"
+        }
+    ]
+}
+]

@@ -36,3 +36,13 @@ html, body {
     top: 100px;
     left: 10px;
 }
+
+.node-connect-point {
+    opacity: .2;
+    fill: none;
+    pointer-events: all;
+}
+.node-connect-point: hover {
+    opacity: 1;
+    fill: green;
+}

@@ -1,22 +1,19 @@
 "use client";
-import {useRef, useEffect, useState} from 'react';
+import {useRef, useEffect, useState, LegacyRef, MutableRefObject} from 'react';
 import * as Diagram from '@/components/diagram/';
-import LeftNavMenu from '@/components/LeftNav'
+import LeftNavMenu from '@/components/LeftNav';
+import * as nodesData from '@/public/node-data.json';
 
 
 export default function ERD() {
     const [windowDimensions, setWindowDimensions] = useState({width: 0, height: 0});
     const svgRef = useRef<SVGSVGElement>(null);
+    const svgGrid = useRef<SVGRectElement>(null);
     const viewBox = {
         x: 0,
         y: 0,
         width: 0,
         height: 0
-    };
-    const nodeParams = {
-        title: "A Long Title To Test The Clipping Mask",
-        x: 100,
-        width: 200
     };
     const pointer = {
         isDown: false,
@@ -39,24 +36,23 @@ export default function ERD() {
         console.log("window.innerHeight", window.innerHeight);
         viewBox.width = window.innerWidth;
         viewBox.height = window.innerHeight;
-    }, []);
-
-    // Resize the SVG based on the window.
-    useEffect(() => {
-        function handleResize() {
-          setWindowDimensions(windowDimensions => ({width: window.innerWidth, height: window.innerHeight}));
-          updateViewBox();
-        }
     
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [window]);
+        window.addEventListener('resize', () => {
+            setWindowDimensions(windowDimensions => ({width: window.innerWidth, height: window.innerHeight}));
+            updateViewBox();
+        });
+    }, []);
 
     // Update the SVG viewbox whenever the variable is update.
     useEffect(() => {
         console.log(`SVG viewBox updated: ${JSON.stringify(viewBox)}`);
         updateViewBox();
     }, [viewBox]);
+
+    // Update the SVG viewbox whenever the variable is update.
+    useEffect(() => {
+        console.log(`nodes updated: ${JSON.stringify(nodesData)}`);
+    }, [nodesData]);
 
     // Handle SVG mouse events.
     useEffect(() =>{
@@ -83,6 +79,12 @@ export default function ERD() {
             pointer.origin.y = event.clientY;
         });
 
+        svgRef.current!.addEventListener('click', (event: MouseEvent) => {
+            console.log("SVG click");
+            pointer.origin.x = event.clientX;
+            pointer.origin.y = event.clientY;
+        });
+
         svgRef.current!.addEventListener('mousemove', (event: MouseEvent) => {
             //console.log(`SVG mouseMove. pointer.isDown: ${pointer.isDown}`);
             pointer.position.x = event.clientX;
@@ -101,8 +103,9 @@ export default function ERD() {
 
     const updateViewBox = () => {
         const viewBoxString = Object.values(viewBox).join(" ");
-        console.log(`mousemove moving the svg viewbox ${viewBoxString}`);
+        console.log(`updateViewBox moving the svg viewbox ${viewBoxString}`);
         svgRef.current?.setAttribute('viewBox', viewBoxString);
+        svgGrid.current?.setAttribute('width', '100%');
     }
 
     return (
@@ -120,9 +123,14 @@ export default function ERD() {
                             <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" strokeWidth="1"/>
                         </pattern>
                     </defs>
-                    <rect width="100%" height="100%" fill="url(#smallGrid)" />
+                    <rect ref={svgGrid} width="100%" height="100%" fill="url(#smallGrid)" />
                     <g id="diagram-wrapper">
-                        <Diagram.Table {...nodeParams} />
+                        {
+                            (nodesData).map((node, index) => (
+                                <Diagram.Table key={`node_${index}`} {...node} />
+                            ))
+                        }
+                        {/*<path d={`M${nodesData[0].x} ${nodesData[0].y} ${nodesData[1].x} ${nodesData[1].y}`} stroke-width="1" stroke="black"/>*/}
                     </g>
                 </svg>
             </div>
